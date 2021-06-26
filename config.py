@@ -8,3 +8,7 @@ class Config:
     APP_TIMEOUT = 300
     CAMERA_ID = AccessCreds.access_details["camera_name"]
     API_TOKEN = AccessCreds.access_details["api_token"]
+
+    CAMERA_WIDTH = 720
+    CAMERA_HEIGHT = 480
+    CAMERA_FPS = 30

@@ -1,5 +1,6 @@
 import cv2
 import threading
+from config import Config
 
 
 class Camera:
@@ -22,19 +23,24 @@ class Camera:
     def preview_generator(self):
         while self.is_running:
             if self.frame is not None:
-                frame = cv2.resize(self.frame, (1280, 720))
-
-                _, frame = cv2.imencode('.jpg', frame)
+                _, frame = cv2.imencode('.jpg', self.frame)
                 frame = frame.tobytes()
 
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+    def setup_cap(self):
+        self.camera_capture = cv2.VideoCapture(0)
+
+        self.camera_capture.set(cv2.CAP_PROP_FRAME_WIDTH, Config.CAMERA_WIDTH)
+        self.camera_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, Config.CAMERA_HEIGHT)
+        self.camera_capture.set(cv2.CAP_PROP_FPS, Config.CAMERA_FPS)
+
     def start(self):
         self.camera_process = threading.Thread(target=self.process)
 
         self.is_running = True
-        self.camera_capture = cv2.VideoCapture(0)
+        self.setup_cap()
         self.camera_process.start()
 
     def stop(self):
