@@ -102,7 +102,7 @@ input.login-form-input {
 .main-container {
     height: 100%;
     padding: 0 5px;
-    padding-bottom: 40px;
+    overflow: auto;
 }
 
 .api-container {
@@ -112,6 +112,7 @@ input.login-form-input {
 
 .preview-container {
     display: flex;
+    height: 100%;
 }
 
 .footer {
