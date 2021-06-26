@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="navbar">
+            <span class="main-title">HomeCam</span>
+            <form action="{{ url_for('auth.logout') }}" method="POST">
+                <button class="logout-button" type="submit">
+                    Logout
+                </button>
+            </form>
+        </div>
+        <div class="main-container">
+            Camera Preview
+        </div>
+        <div class="footer">
+        </div>
+    </div>
+{% endblock %}
