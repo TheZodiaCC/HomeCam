@@ -23,10 +23,9 @@ def check():
     if flask_login.current_user.is_authenticated:
         return redirect(url_for("content.home"))
     else:
-        access_account = AccessCreds.access_details
-        camera_id = access_account["camera_name"]
-
         try:
+            access_account = AccessCreds.access_details
+
             if request.form["password"] == access_account["camera_access_password"]:
                 user = User()
                 user.id = access_account["camera_name"]
@@ -36,11 +35,11 @@ def check():
                 return redirect(url_for("content.home"))
             else:
                 message = "Wrong password"
-                return render_template("login.html", message=message, camera_id=camera_id)
+                return render_template("login.html", message=message)
 
         except:
             message = "Wrong password"
-            return render_template("login.html", message=message, camera_id=camera_id)
+            return render_template("login.html", message=message)
 
 
 @auth_.route("/auth/logout", methods=["POST", "GET"])

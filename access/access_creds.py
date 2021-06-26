@@ -1,9 +1,9 @@
 import json
-from config import Config
+import os
 
 
 class AccessCreds:
-    CURRENT_DIR = Config.CURRENT_DIR
+    current_dir = os.path.dirname(os.path.realpath(__file__))
 
-    with open(f"{CURRENT_DIR}/access/creds.json", "r") as creds:
+    with open(os.path.join(current_dir, "creds.json"), "r") as creds:
         access_details = json.loads(creds.read())

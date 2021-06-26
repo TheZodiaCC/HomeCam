@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="navbar">
+            <span class="main-title">{{ config.CAMERA_ID }}</span>
+            <form action="{{ url_for('auth.logout') }}" method="POST">
+                <a href="{{ url_for('content.home') }}">
+                    <button type="button">
+                        Home
+                    </button>
+                </a>
+                <button class="logout-button" type="submit">
+                    Logout
+                </button>
+            </form>
+        </div>
+        <div class="main-container">
+            <div class="api-container">
+                <form action="{{ url_for('content.api_key_save') }}">
+                    <span>
+                        API Key:
+                    </span>
+                    <input type="text" value="{{ config.API_TOKEN }}" id="api-key" name="api-key">
+                    <button type="button" onclick="generateAPIKey();">
+                        Generate
+                    </button>
+                    <button type="submit">
+                        Save
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="footer">
+        </div>
+    </div>
+{% endblock %}

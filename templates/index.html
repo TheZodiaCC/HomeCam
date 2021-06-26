@@ -2,8 +2,13 @@
 {% block content %}
     <div class="container">
         <div class="navbar">
-            <span class="main-title">HomeCam</span>
+            <span class="main-title">{{ config.CAMERA_ID }}</span>
             <form action="{{ url_for('auth.logout') }}" method="POST">
+                <a href="{{ url_for('content.api_key') }}">
+                    <button type="button">
+                        API
+                    </button>
+                </a>
                 <button class="logout-button" type="submit">
                     Logout
                 </button>
