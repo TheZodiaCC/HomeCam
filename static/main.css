@@ -110,6 +110,10 @@ input.login-form-input {
     padding: 10px;
 }
 
+.preview-container {
+    display: flex;
+}
+
 .footer {
     position: fixed;
     background-color: #14A76C;

@@ -4,6 +4,11 @@
         <div class="navbar">
             <span class="main-title">{{ config.CAMERA_ID }}</span>
             <form action="{{ url_for('auth.logout') }}" method="POST">
+                <a href="{{ url_for('content.camera_switch') }}">
+                    <button type="button">
+                        Preview
+                    </button>
+                </a>
                 <a href="{{ url_for('content.api_key') }}">
                     <button type="button">
                         API
@@ -15,7 +20,9 @@
             </form>
         </div>
         <div class="main-container">
-            Camera Preview
+            <div class="preview-container">
+                <img src="{{ url_for('content.preview') }}" width="100%">
+            </div>
         </div>
         <div class="footer">
         </div>
