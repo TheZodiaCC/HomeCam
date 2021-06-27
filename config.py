@@ -1,7 +1,9 @@
 from access.access_creds import AccessCreds
+import os
 
 
 class Config:
+    CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
     APP_PORT = 8080
     APP_HOST = "0.0.0.0"
     DEBUG_MODE = False
@@ -16,3 +18,9 @@ class Config:
     PICTURE_CAMERA_WIDTH = 3280
     PICTURE_CAMERA_HEIGHT = 2464
     PICTURE_QUALITY = 100
+
+    VIDEO_CAMERA_WIDTH = 1920
+    VIDEO_CAMERA_HEIGHT = 1080
+    VIDEO_CAMERA_FPS = 30
+
+    RECORDINGS_PATH = os.path.join(CURRENT_DIR, "recs")
