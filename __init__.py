@@ -20,10 +20,11 @@ def create_app():
         return user
 
     with app.app_context():
-        from routes import content, auth, errors
+        from routes import content, auth, errors, api
 
         app.register_blueprint(content.content_)
         app.register_blueprint(auth.auth_)
         app.register_blueprint(errors.errors_)
+        app.register_blueprint(api.api_)
 
         return app

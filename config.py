@@ -9,6 +9,10 @@ class Config:
     CAMERA_ID = AccessCreds.access_details["camera_name"]
     API_TOKEN = AccessCreds.access_details["api_token"]
 
-    CAMERA_WIDTH = 720
-    CAMERA_HEIGHT = 480
-    CAMERA_FPS = 30
+    PREVIEW_CAMERA_WIDTH = 720
+    PREVIEW_CAMERA_HEIGHT = 480
+    PREVIEW_CAMERA_FPS = 30
+
+    PICTURE_CAMERA_WIDTH = 3280
+    PICTURE_CAMERA_HEIGHT = 2464
+    PICTURE_QUALITY = 100

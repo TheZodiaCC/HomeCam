@@ -29,18 +29,25 @@ class Camera:
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-    def setup_cap(self):
+    def setup_cap(self, width, height, fps):
         self.camera_capture = cv2.VideoCapture(0)
 
-        self.camera_capture.set(cv2.CAP_PROP_FRAME_WIDTH, Config.CAMERA_WIDTH)
-        self.camera_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, Config.CAMERA_HEIGHT)
-        self.camera_capture.set(cv2.CAP_PROP_FPS, Config.CAMERA_FPS)
+        self.camera_capture.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        self.camera_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        self.camera_capture.set(cv2.CAP_PROP_FPS, fps)
+
+    def take_picture(self):
+        self.setup_cap(Config.PICTURE_CAMERA_WIDTH, Config.PICTURE_CAMERA_HEIGHT, 1)
+
+        _, self.frame = self.camera_capture.read()
+
+        self.camera_capture.release()
 
     def start(self):
         self.camera_process = threading.Thread(target=self.process)
 
         self.is_running = True
-        self.setup_cap()
+        self.setup_cap(Config.PREVIEW_CAMERA_WIDTH, Config.PREVIEW_CAMERA_HEIGHT, Config.PREVIEW_CAMERA_FPS)
         self.camera_process.start()
 
     def stop(self):
