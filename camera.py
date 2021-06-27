@@ -38,13 +38,15 @@ class Camera:
         self.camera_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self.camera_capture.set(cv2.CAP_PROP_FPS, fps)
 
-    def take_picture(self, output_dir, timestamp):
+    @staticmethod
+    def take_picture(output_dir, timestamp):
         output = os.path.join(output_dir, f"{timestamp}.jpg")
 
         raspistill_pipeline = f"raspistill -w {Config.PICTURE_CAMERA_WIDTH} -h {Config.PICTURE_CAMERA_HEIGHT} -o {output}"
         subprocess.call(raspistill_pipeline.split(" "))
 
-    def record_video(self, length, output_dir, timestamp):
+    @staticmethod
+    def record_video(length, output_dir, timestamp):
         output = os.path.join(output_dir, f"{timestamp}.h264")
 
         raspivid_pipeline = f"raspivid --width {Config.VIDEO_CAMERA_WIDTH} --height {Config.VIDEO_CAMERA_HEIGHT} -" \
