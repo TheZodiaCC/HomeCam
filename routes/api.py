@@ -12,12 +12,14 @@ api_ = Blueprint("api", __name__, template_folder='template', static_folder='sta
 @api_.route("/api/get_picture", methods=["POST"])
 def get_picture():
     if api_utils.auth(request.headers.get("API-KEY")):
+        api_utils.clear_recordings()
+
         camera = Camera()
+        timestamp = api_utils.generate_timestamp()
 
-        camera.take_picture()
-        frame = camera.frame
+        camera.take_picture(Config.RECORDINGS_PATH, timestamp)
+        frame = cv2.imread(os.path.join(Config.RECORDINGS_PATH, f"{timestamp}.jpg"))
 
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, Config.PICTURE_QUALITY])[1].tolist()
 
         return jsonify(frame)

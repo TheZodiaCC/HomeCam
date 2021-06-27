@@ -38,12 +38,11 @@ class Camera:
         self.camera_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self.camera_capture.set(cv2.CAP_PROP_FPS, fps)
 
-    def take_picture(self):
-        self.setup_cap(Config.PICTURE_CAMERA_WIDTH, Config.PICTURE_CAMERA_HEIGHT, 1)
+    def take_picture(self, output_dir, timestamp):
+        output = os.path.join(output_dir, f"{timestamp}.jpg")
 
-        _, self.frame = self.camera_capture.read()
-
-        self.camera_capture.release()
+        raspistill_pipeline = f"raspistill -w {Config.PICTURE_CAMERA_WIDTH} -h {Config.PICTURE_CAMERA_HEIGHT} -o {output}"
+        subprocess.call(raspistill_pipeline.split(" "))
 
     def record_video(self, length, output_dir, timestamp):
         output = os.path.join(output_dir, f"{timestamp}.h264")
@@ -54,13 +53,10 @@ class Camera:
                             f"--timeout {length * 1000} " \
                             f"--output {output}"
 
-        raspivid_pipeline = raspivid_pipeline.split(" ")
-
         ffmpeg_pipeline = f"ffmpeg -i {output} -c copy {os.path.join(output_dir, f'{timestamp}.mp4')}"
-        ffmpeg_pipeline = ffmpeg_pipeline.split(" ")
 
-        subprocess.call(raspivid_pipeline)
-        subprocess.call(ffmpeg_pipeline)
+        subprocess.call(raspivid_pipeline.split(" "))
+        subprocess.call(ffmpeg_pipeline.split(" "))
 
     def start(self):
         self.camera_process = threading.Thread(target=self.process)
