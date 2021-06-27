@@ -1,7 +1,7 @@
 import cv2
 import threading
 import os
-import api_utils
+import subprocess
 from config import Config
 
 
@@ -46,28 +46,21 @@ class Camera:
         self.camera_capture.release()
 
     def record_video(self, length, output_dir, timestamp):
-        self.setup_cap(Config.VIDEO_CAMERA_WIDTH, Config.VIDEO_CAMERA_HEIGHT, Config.VIDEO_CAMERA_FPS)
-        start_time = timestamp
+        output = os.path.join(output_dir, f"{timestamp}.h264")
 
-        if self.camera_capture.isOpened():
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            output = os.path.join(output_dir, f"{timestamp}.mp4")
+        raspivid_pipeline = f"raspivid --width {Config.VIDEO_CAMERA_WIDTH} --height {Config.VIDEO_CAMERA_HEIGHT} -" \
+                            f"-framerate {Config.VIDEO_CAMERA_FPS} " \
+                            f"--bitrate {Config.VIDEO_BITRATE} " \
+                            f"--timeout {length * 1000} " \
+                            f"--output {output}"
 
-            frame_size = (self.camera_capture.get(cv2.CAP_PROP_FRAME_WIDTH), self.camera_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            frame_size = tuple(map(int, frame_size))
+        raspivid_pipeline = raspivid_pipeline.split(" ")
 
-            writer = cv2.VideoWriter(output, fourcc, self.camera_capture.get(cv2.CAP_PROP_FPS), frame_size)
+        ffmpeg_pipeline = f"ffmpeg -i {output} -c copy {os.path.join(output_dir, f'{timestamp}.mp4')}"
+        ffmpeg_pipeline = ffmpeg_pipeline.split(" ")
 
-            while int(api_utils.generate_timestamp() - start_time) < length:
-                ret, frame = self.camera_capture.read()
-
-                if ret:
-                    writer.write(frame)
-                else:
-                    break
-
-            writer.release()
-            self.camera_capture.release()
+        subprocess.call(raspivid_pipeline)
+        subprocess.call(ffmpeg_pipeline)
 
     def start(self):
         self.camera_process = threading.Thread(target=self.process)
